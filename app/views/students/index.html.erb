@@ -1,0 +1,17 @@
+<% if session[:role] != "student" 
+   redirect_to root_url end %>
+<h1>Welcome Student</h1>
+<div class="topnav">
+  <a><%= link_to "Home", :controller => "students", :action => "index" %></a>
+  <a><%= link_to "My Books", :controller => "students", :action => "mybooks" %></a>
+  <a><%= link_to "Edit My Profile", edit_student_path(session[:student_id])%></a>
+
+  <a class="topcorner"><%= link_to "Sign Out", :controller => "students", :action => "logout"%></a>
+ </div>
+<a href="students/alllibs"></a><br><br>
+<%= link_to "List of all the libraries", :controller => "students", :action => "alllibs"%><br><br>
+<%= link_to "View all books", :controller => "students", :action => "allbooks"%><br><br>
+<%= link_to "My Bookmarks", :controller => "students", :action => "viewbookmark"%><br><br>
+<%= link_to "Overdue Fines", :controller => "students", :action => "fines"%><br><br>
+
+

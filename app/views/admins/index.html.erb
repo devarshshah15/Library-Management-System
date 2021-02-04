@@ -1,0 +1,30 @@
+<br>
+<h1 >Welcome to Admin Home-Page</h1>
+
+<% if !session[:admin_id] %>
+  redirect_to root_url
+   <%end%>
+<div class="topnav">
+  <a><%= link_to "Home", :controller => "admins", :action => "index" %></a>
+
+  <a><%= link_to "Edit My Profile", edit_admin_path(session[:admin_id])%></a>
+    <a><%= link_to "View all Students", :controller => "admins", :action => "showallstudents" %></a>
+  <a><%= link_to "View all Librarians", :controller => "admins", :action => "showalllibrarians" %></a>
+  <a><%= link_to "Sign Out", :controller => "admins", :action => "destroy"%></a>
+</div>
+<br>
+<br>
+
+  <a><%= link_to "Create Student Account", :controller => "students", :action => "new"%></a><br><br>
+  <a><%= link_to "Create Librarian Account", :controller => "librarians", :action => "new"%></a><br><br>
+  <a><%= link_to "Create Library Account", :controller => "libraries", :action => "new"%></a><br><br>
+  <a><%= link_to "Create a Book ", :controller => "books", :action => "new"%></a><br><br>
+
+<a><%= link_to "View All Books", :controller => 'books', :action => "index" %></a><br><br>
+<a><%= link_to "View All Hold Request", :controller => 'librarians', :action => "view_hold_requests" %></a><br><br>
+<a><%= link_to "View All Checked Out Books", :controller => 'librarians', :action => "checked_out_books" %></a><br><br>
+<a><%= link_to "View Overdues", :controller => 'librarians', :action => "overdue" %></a><br><br>
+<a><%= link_to "View Book history", :controller => 'librarians', :action => "book_history" %></a><br><br>
+<a><%= link_to "View Approval Requests", :controller => 'admins', :action => "approve_librarian" %></a><br><br>
+
+

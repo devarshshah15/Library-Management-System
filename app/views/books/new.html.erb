@@ -1,0 +1,121 @@
+<% if session[:role] != 'librarian' and session[:role] != 'admin' %>
+  <h1 color="red">You are not authorized to view this page</h1>
+  <% if session[:role] == 'librarian' %>
+    <div class="topnav">
+      <a><%= link_to "Home", :controller => "librarians", :action => "index" %></a>
+      <a><%= link_to "Approval Requests", :controller => "librarians", :action => "approval_requests" %></a>
+      <a><%= link_to "Edit My Profile", edit_librarian_path(session[:librarian_id]) %></a>
+      <a><%= link_to "Add a Book", new_book_url %></a>
+      <a><%= link_to "Sign out", :controller => "librarians", :action => "signout" %></a>
+    </div>
+  <% else %>
+    <!-- admin header here -->
+  <% end %>
+<% else %>
+  <h1>Enter Book Details</h1>
+  <%= form_for @book do |f| %>
+    <div id="error_explanation">
+       <% if @book.errors.any? %>
+             <h2><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h2>
+             <ul>
+                    <% @book.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                    <% end %>
+              </ul>
+        <% end %>
+    </div>
+
+
+    <div class="field">
+      <%= f.label :ISBN %>
+      <%= f.text_field :ISBN, :required => true %>
+    </div>
+
+    <br/>
+
+    <div class="field">
+      <%= f.label :title %>
+      <%= f.text_field :title, :required => true %>
+    </div>
+
+    <br/>
+
+    <div class="field">
+      <%= f.label :author %>
+      <%= f.text_field :author, :required => true %>
+    </div>
+
+    <br/>
+
+    <div class="field">
+      <%= f.label :langauge %>
+      <%= f.text_field :language, :required => true %>
+    </div>
+
+    <br/>
+
+ <div class="field">
+      <%= f.label :published %>
+      <%= f.text_field :published, :required => true %>
+    </div>
+    <br/>
+
+    <div class="field">
+      <%= f.label :edition %>
+      <%= f.text_field :edition, :required => true %>
+    </div>
+
+    <br/>
+
+
+    <div class="field">
+      <%= f.label :subject %>
+      <%= f.text_field :subject, :required => true %>
+    </div>
+<br>
+    <div class="field">
+      <%= f.label :summary %>
+      <%= f.text_field :summary, :required => true %>
+    </div>
+<br>
+    <div>
+      Is special Collection:
+      <select name="specialcollection">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+    </div>
+<br>
+
+ <div>
+      <%= f.label :avatar %>
+      <%= f.file_field :avatar ,:accept => 'image/png,image/jpeg,image/JPG'%>
+    </div>
+    
+    <br>
+    <div class="field">
+      <%= f.label :copies %>
+      <%= f.text_field :copies, :required => true %>
+    </div>
+<br>
+    <% if session[:role] == 'admin' %>
+      <div>
+        <% @libraries = Library.all %>
+        <!--    <%#= f.label :lib %>
+    Library: <%#= select_tag :lib, options_from_collection_for_select(@library, "id", "name") %>-->
+        Library: <select name="library_id">
+        <%= @libraries.each do |lib| %>
+          <option value="<%= lib.id %>"><%= lib.name %></option>
+        <% end %>
+      </select>
+      </div>
+    <% end %>
+
+<br>
+    <div class="action">
+      <%= f.submit "Add Book" %>
+    </div>
+
+  <% end %>
+<% end %>

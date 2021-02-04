@@ -1,0 +1,59 @@
+<% if session[:role] != 'librarian' and session[:role] != 'admin' %>
+  <h1 color="red">You are not authorized to view this page</h1>
+<% else %>
+  <div class="topnav">
+    <a><%= link_to "Home", :controller => "librarians", :action => "index" %></a>
+    <a><%= link_to "Approval Requests", :controller =>"librarians", :action => "approval_requests"%></a>
+    <a><%= link_to "Edit My Profile", edit_librarian_path(session[:librarian_id])%></a>
+    <a><%= link_to "Add a Book", new_book_url%></a>
+    <a><%= link_to "Sign out", :controller => "librarians", :action => "signout"%></a>
+  </div>
+  <br>
+  <br>
+  <%= form_for @library do |f| %>
+
+    <% if @library.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@library.errors.count, "error") %> prohibited this library from being edited:</h2>
+
+        <ul>
+          <% @library.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+<table>
+
+  <tr>
+      <td><%= f.label :name %></td>
+      <td><%= f.text_field :name, :read_only => true, :size => "30"%></td>
+  </tr>
+
+    <tr>
+      <td><%= f.label :university_id %></td>
+      <td><%= f.text_field :university_id, :readonly => true, :value => @university[:name], :size => "30" %></td>
+    </tr>
+
+    <tr>
+      <td><%= f.label :location %></td>
+      <td><%= f.text_field :location, :readonly => true, :size => "30" %></td>
+    </tr>
+
+
+    <tr>
+      <td><%= f.label :fines %></td>
+      <td><%= f.text_field :fines, :required => true, :size => "30"%></td>
+    </tr>
+
+    <tr>
+      <td><%= f.label :max_days %></td>
+      <td><%= f.text_field :max_days, :required => true, :size => "30" %></td>
+    </tr>
+
+    <tr>
+      <td><%= f.submit "Confirm Changes" %></td>
+    </tr>
+</table>
+  <% end %>
+<% end %>

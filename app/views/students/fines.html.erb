@@ -1,0 +1,44 @@
+<% if !session[:student_id] 
+  redirect_to root_url end%>
+<div class="topnav">
+  <a><%= link_to "Home", :controller => "students", :action => "index" %></a>
+  <a><%= link_to "My Books", :controller => "students", :action => "mybooks" %></a>
+  <a><%= link_to "Edit My Profile", edit_student_path(session[:student_id])%></a>
+
+  <a class="topcorner"><%= link_to "Sign Out", :controller => "students", :action => "logout"%></a>
+  
+</div>
+
+<style type="text/css">
+td
+{
+    padding:0 41px 0 30px;
+}
+</style>
+
+<h1>Overdue Fines</h1>
+
+<table>
+<th>ISBN</th>
+<th>Title</th>
+<th>Checkout Date</th>
+<th>Expected Date</th>
+<th>Return Date</th>
+<th>Status</th>
+<th>Fine</th>
+<% if !@fines.nil? then @fines.each do |fin| %>
+  <tr>
+    <td><%=fin.ISBN %></td>
+    <td><%=fin.bookname%></td>
+    <td><%=fin.checkout_date%></td>
+    <td><%=fin.expected_date%></td>
+    <td><%=fin.return_date%></td>
+    <td><%=fin.status%></td>
+    <%  @bk = Book.find_by_ISBN(fin.ISBN) %>
+    <%  @lib = Library.find_by_library_id(@bk[:library_id])  %>
+    <% fine = (fin.return_date.to_date - fin.expected_date.to_date).to_i*@lib[:fines].to_f%>
+    <td><%=fine%></td>
+  </tr>
+<% end %>
+<% end %>
+</table>

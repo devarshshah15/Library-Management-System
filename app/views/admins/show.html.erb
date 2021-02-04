@@ -1,0 +1,18 @@
+<h1> List of all the users on the system</h1>
+<% Librarian.each do |librarian|%>
+
+<p>
+  <b>Name:</b>
+  <%=@librarian.name %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=@librarian.email %>
+</p>
+
+<p>
+  <b>Library</b>
+  <%=@librarian.library %>
+</p>
+

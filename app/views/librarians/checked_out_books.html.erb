@@ -1,0 +1,60 @@
+<style type="text/css">
+  td {
+    padding: 0 41px 0 30px;
+  }
+</style>
+<% if session[:role] != 'librarian' and session[:role] != 'admin' %>
+  <h1 color="red">You are not authorized to view this page</h1>
+<% else %>
+  <% if session[:role] == 'librarian' %>
+    <%= render 'header' %>
+  <% end %>
+  <% if session[:role] == 'admin' %>
+   <div class="topnav">
+  <a><%= link_to "Home", :controller => "admins", :action => "index" %></a>
+  <a><%= link_to "Edit My Profile", edit_admin_path(session[:admin_id])%></a>
+  <a><%= link_to "View all Students", :controller => "admins", :action => "showallstudents" %></a>
+  <a><%= link_to "View all Librarians", :controller => "admins", :action => "showalllibrarians" %></a>
+  <a><%= link_to "Create Student Account", :controller => "students", :action => "new"%></a>
+  <a><%= link_to "Create Librarian Account", :controller => "librarians", :action => "new"%></a>
+  <a><%= link_to "Sign Out", :controller => "admins", :action => "destroy"%></a>
+ </div>
+
+
+  <% end %>
+
+<br>
+  <h1>List of Checked out Items</h1>
+  <table border="1px">
+    <th>ISBN</th>
+    <th>Student Name</th>
+    <th>Book Name</th>
+    <th>Checked Out Date</th>
+    <th>Expected Return Date</th>
+    <% if session[:role] == 'admin' %>
+      <th>Library Name</th>
+      <th>University Name</th>
+    <% end %>
+
+    <% if !@holds.nil? then
+         @holds.each do |hold| %>
+        <tr>
+          <td><%= hold.ISBN %></td>
+          <% @student = Student.find_by_id(hold.student_id) %>
+          <% if !@student.nil? %>
+            <td><%= @student[:name] %></td>
+          <% end %>
+          <td><%= hold.bookname %></td>
+          <td><%= hold.checkout_date %></td>
+          <td><%= hold.expected_date %></td>
+          <% if session[:role] == 'admin' %>
+            <% @library = Library.find_by_library_id(hold.library_id) %>
+            <td><%= @library[:name] %></td>
+            <% @university = University.find_by_university_id(@library[:university_id]) %>
+            <td><%= @university[:name] %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+<% end %>
+</table>

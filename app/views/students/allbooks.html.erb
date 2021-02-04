@@ -1,0 +1,45 @@
+<% if session[:role] != "student" %> 
+  redirect_to root_url 
+<%end%>
+<div class="topnav">
+  <a><%= link_to "Home", :controller => "students", :action => "index" %></a>
+  <a><%= link_to "My Books", :controller => "students", :action => "mybooks" %></a>
+  <a><%= link_to "Edit My Profile", edit_student_path(session[:student_id])%></a>
+
+  <a class="topcorner"><%= link_to "Sign Out", :controller => "students", :action => "logout"%></a>
+  
+</div>
+<%= link_to "Search Book(s)", :controller => "books", :action => "search"%><br><br>
+<style type="text/css">
+td
+{
+    padding:0 41px 0 30px;
+}
+</style>
+
+<h1>List of Books</h1>
+<table>
+<th>ISBN</th> 
+<th>title</th> 
+<th>author</th> 
+<th>Language</th> 
+<th>Published</th> 
+<th>Edition</th> 
+<th>Subject</th> 
+<th>Special Collection</th> 
+<th>Summary</th>
+<% if !@book.nil? then @book.each do |bk| %>
+  <tr>
+    <td><%= bk.ISBN %></td>
+    <td><%= bk.title %></td>
+    <td><%= bk.author %></td>
+    <td><%= bk.language %></td>
+    <td><%= bk.published %></td>
+    <td><%= bk.edition %></td>
+    <td><%= bk.subject %></td>
+    <td><%= bk.specialcollection %></td>
+    <td><%= bk.summary %></td>&nbsp
+  </tr>
+<% end %>
+<% end %>
+</table>
